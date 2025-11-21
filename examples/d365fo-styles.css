@@ -636,6 +636,59 @@ body {
    ============================================ */
 
 /* ============================================
+   Command Buttons (Icon Above Text)
+   ============================================ */
+
+.commandButton {
+    background: none;
+    border: 1px solid transparent;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    min-width: 70px;
+}
+
+.commandButton:hover {
+    background-color: var(--d365-gray-light);
+    border-color: var(--d365-gray);
+}
+
+.commandButton:active {
+    background-color: var(--d365-gray-medium);
+}
+
+.commandButton-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+}
+
+.commandButton-icon {
+    font-size: 20px;
+    display: block;
+}
+
+.commandButton-label {
+    font-size: 11px;
+    line-height: 1.2;
+    display: block;
+    max-width: 80px;
+}
+
+.commandButton-dropdown {
+    font-size: 8px;
+    margin-top: -2px;
+}
+
+.appBarTab-commands {
+    background: #faf9f8;
+    border-top: 1px solid var(--d365-gray-medium);
+}
+
+/* ============================================
    Flyout Menus
    ============================================ */
 

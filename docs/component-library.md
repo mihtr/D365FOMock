@@ -65,6 +65,87 @@
 </button>
 ```
 
+### Command Button (Icon Above Text)
+
+Used in Action Pane command areas. Icon displays above the label in vertical layout.
+
+```html
+<button class="button commandButton" type="button">
+  <div class="commandButton-container">
+    <span class="commandButton-icon">👤</span>
+    <span class="commandButton-label">Contacts</span>
+  </div>
+</button>
+```
+
+**With dropdown:**
+
+```html
+<div class="flyoutContainer">
+  <button class="button commandButton flyoutButton-Button"
+          aria-haspopup="true"
+          aria-expanded="false"
+          type="button">
+    <div class="commandButton-container">
+      <span class="commandButton-icon">🏦</span>
+      <span class="commandButton-label">Bank</span>
+      <span class="commandButton-dropdown">▼</span>
+    </div>
+  </button>
+  <div class="sysPopup flyoutButton-flyOut layout-root-scope"
+       role="menu"
+       tabindex="-1"
+       aria-hidden="true"
+       style="display: none;">
+    <!-- Menu items -->
+  </div>
+</div>
+```
+
+**Multi-line label:**
+
+```html
+<button class="button commandButton" type="button">
+  <div class="commandButton-container">
+    <span class="commandButton-icon">🔄</span>
+    <span class="commandButton-label">Change party<br>association</span>
+  </div>
+</button>
+```
+
+**CSS:**
+
+```css
+.commandButton {
+    background: none;
+    border: 1px solid transparent;
+    padding: 8px 12px;
+    min-width: 70px;
+}
+
+.commandButton-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-align: center;
+}
+
+.commandButton-icon {
+    font-size: 20px;
+}
+
+.commandButton-label {
+    font-size: 11px;
+    line-height: 1.2;
+    max-width: 80px;
+}
+
+.commandButton-dropdown {
+    font-size: 8px;
+}
+```
+
 ---
 
 ## Flyout Menus

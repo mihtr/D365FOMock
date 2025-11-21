@@ -145,6 +145,105 @@
                     <button class="appBarTab-header active">
                         <span class="appBarTab-headerLabel">Customer</span>
                     </button>
+                    <!-- Command buttons for Customer tab -->
+                    <div class="appBarTab-commands" style="display: flex; gap: 4px; padding: 8px; background: #faf9f8;">
+                        <!-- Contacts dropdown -->
+                        <div class="flyoutContainer">
+                            <button class="button commandButton flyoutButton-Button"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    type="button">
+                                <div class="commandButton-container">
+                                    <span class="commandButton-icon">👤</span>
+                                    <span class="commandButton-label">Contacts</span>
+                                    <span class="commandButton-dropdown">▼</span>
+                                </div>
+                            </button>
+                            <div class="sysPopup flyoutButton-flyOut layout-root-scope"
+                                 role="menu"
+                                 tabindex="-1"
+                                 aria-hidden="true"
+                                 style="display: none;">
+                                <button class="button flyout-menuItem" role="menuitem">
+                                    <div class="button-container">
+                                        <span class="button-label">Contact person</span>
+                                    </div>
+                                </button>
+                                <button class="button flyout-menuItem" role="menuitem">
+                                    <div class="button-container">
+                                        <span class="button-label">Contact information</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Change party association -->
+                        <button class="button commandButton">
+                            <div class="commandButton-container">
+                                <span class="commandButton-icon">🔄</span>
+                                <span class="commandButton-label">Change party<br>association</span>
+                            </div>
+                        </button>
+
+                        <!-- Transactions -->
+                        <button class="button commandButton">
+                            <div class="commandButton-container">
+                                <span class="commandButton-icon">📄</span>
+                                <span class="commandButton-label">Transactions</span>
+                            </div>
+                        </button>
+
+                        <!-- Balance -->
+                        <button class="button commandButton">
+                            <div class="commandButton-container">
+                                <span class="commandButton-icon">💰</span>
+                                <span class="commandButton-label">Balance</span>
+                            </div>
+                        </button>
+
+                        <!-- Forecast -->
+                        <button class="button commandButton">
+                            <div class="commandButton-container">
+                                <span class="commandButton-icon">📊</span>
+                                <span class="commandButton-label">Forecast</span>
+                            </div>
+                        </button>
+
+                        <!-- Bank dropdown -->
+                        <div class="flyoutContainer">
+                            <button class="button commandButton flyoutButton-Button"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    type="button">
+                                <div class="commandButton-container">
+                                    <span class="commandButton-icon">🏦</span>
+                                    <span class="commandButton-label">Bank</span>
+                                    <span class="commandButton-dropdown">▼</span>
+                                </div>
+                            </button>
+                            <div class="sysPopup flyoutButton-flyOut layout-root-scope"
+                                 role="menu"
+                                 tabindex="-1"
+                                 aria-hidden="true"
+                                 style="display: none;">
+                                <button class="button flyout-menuItem" role="menuitem">
+                                    <div class="button-container">
+                                        <span class="button-label">Bank accounts</span>
+                                    </div>
+                                </button>
+                                <button class="button flyout-menuItem" role="menuitem">
+                                    <div class="button-container">
+                                        <span class="button-label">Summary update</span>
+                                    </div>
+                                </button>
+                                <button class="button flyout-menuItem" role="menuitem">
+                                    <div class="button-container">
+                                        <span class="button-label">Credit cards</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabSell">
                     <button class="appBarTab-header">
