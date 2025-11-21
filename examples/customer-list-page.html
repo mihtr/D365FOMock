@@ -87,6 +87,57 @@
                             <span class="button-label">Delete</span>
                         </div>
                     </button>
+
+                    <!-- More Actions Dropdown -->
+                    <div class="flyoutContainer">
+                        <button class="button flyoutButton-Button dynamicsButton"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                                type="button"
+                                id="moreActionsButton">
+                            <div class="button-container">
+                                <span class="button-commandRing">⚙</span>
+                                <span class="button-label button-label-dropDown">More</span>
+                            </div>
+                        </button>
+
+                        <div class="sysPopup flyoutButton-flyOut layout-root-scope"
+                             role="menu"
+                             tabindex="-1"
+                             aria-hidden="true"
+                             id="moreActionsMenu"
+                             style="display: none;">
+
+                            <button class="button flyout-menuItem" role="menuitem" type="button">
+                                <div class="button-container">
+                                    <span class="button-commandRing">📋</span>
+                                    <span class="button-label">Copy</span>
+                                </div>
+                            </button>
+
+                            <button class="button flyout-menuItem" role="menuitem" type="button">
+                                <div class="button-container">
+                                    <span class="button-commandRing">📤</span>
+                                    <span class="button-label">Export to Excel</span>
+                                </div>
+                            </button>
+
+                            <button class="button flyout-menuItem" role="menuitem" type="button">
+                                <div class="button-container">
+                                    <span class="button-commandRing">🔄</span>
+                                    <span class="button-label">Refresh</span>
+                                </div>
+                            </button>
+
+                            <button class="button flyout-menuItem" role="menuitem" type="button">
+                                <div class="button-container">
+                                    <span class="button-commandRing">📊</span>
+                                    <span class="button-label">View details</span>
+                                </div>
+                            </button>
+
+                        </div>
+                    </div>
                 </div>
 
                 <!-- App Bar Tabs -->

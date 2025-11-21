@@ -237,15 +237,47 @@ function attachEventListeners() {
         });
     });
 
-    // Action buttons (Edit, New, Delete)
-    const actionButtons = document.querySelectorAll('.button.dynamicsButton');
+    // Flyout button clicks
+    document.querySelectorAll('.flyoutButton-Button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFlyout(this);
+        });
+    });
+
+    // Menu item keyboard navigation
+    document.querySelectorAll('.flyout-menuItem').forEach(item => {
+        item.addEventListener('keydown', handleMenuKeydown);
+    });
+
+    // Menu item clicks
+    document.querySelectorAll('.flyout-menuItem').forEach(item => {
+        item.addEventListener('click', function() {
+            const container = this.closest('.flyoutContainer');
+            const button = container.querySelector('.flyoutButton-Button');
+            const flyout = container.querySelector('.flyoutButton-flyOut');
+            const label = this.querySelector('.button-label')?.textContent || 'Action';
+
+            console.log(`Menu item clicked: ${label}`);
+
+            // Execute menu item action
+            handleMenuAction(label);
+
+            // Close flyout
+            closeFlyout(button, flyout);
+        });
+    });
+
+    // Action buttons (Edit, New, Delete) - exclude flyout buttons
+    const actionButtons = document.querySelectorAll('.actionPane-buttons .button.dynamicsButton');
     actionButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             const label = this.querySelector('.button-label')?.textContent || 'Action';
             console.log(`Clicked: ${label}`);
 
             // Provide user feedback
-            if (selectedRows.size === 0) {
+            if (selectedRows.size === 0 && label !== 'New') {
                 alert('Please select at least one customer record first.');
             } else {
                 alert(`Executing: ${label}\n\nSelected records: ${selectedRows.size}`);
@@ -262,6 +294,147 @@ function attachEventListeners() {
     });
 }
 
+// Handle menu actions
+function handleMenuAction(actionLabel) {
+    switch(actionLabel) {
+        case 'Copy':
+            if (selectedRows.size > 0) {
+                alert(`Copying ${selectedRows.size} customer record(s)...`);
+            } else {
+                alert('Please select at least one customer record to copy.');
+            }
+            break;
+
+        case 'Export to Excel':
+            alert('Exporting data to Excel...\n\nThis would generate an Excel file with the current grid data.');
+            break;
+
+        case 'Refresh':
+            alert('Refreshing data...');
+            // In a real app, this would reload data from server
+            renderGrid();
+            updateRecordCount();
+            break;
+
+        case 'View details':
+            if (selectedRows.size === 1) {
+                const account = Array.from(selectedRows)[0];
+                openCustomerDetails(account);
+            } else if (selectedRows.size === 0) {
+                alert('Please select a customer record first.');
+            } else {
+                alert('Please select only one customer record to view details.');
+            }
+            break;
+
+        default:
+            alert(`Action: ${actionLabel}`);
+    }
+}
+
+// Flyout menu functionality
+function toggleFlyout(buttonElement) {
+    const container = buttonElement.closest('.flyoutContainer');
+    const flyout = container.querySelector('.flyoutButton-flyOut');
+    const isOpen = buttonElement.getAttribute('aria-expanded') === 'true';
+
+    // Close all other open flyouts first
+    document.querySelectorAll('.flyoutButton-Button[aria-expanded="true"]').forEach(btn => {
+        if (btn !== buttonElement) {
+            closeFlyout(btn, btn.closest('.flyoutContainer').querySelector('.flyoutButton-flyOut'));
+        }
+    });
+
+    if (isOpen) {
+        closeFlyout(buttonElement, flyout);
+    } else {
+        openFlyout(buttonElement, flyout);
+    }
+}
+
+function openFlyout(buttonElement, flyout) {
+    // Update ARIA attributes
+    buttonElement.setAttribute('aria-expanded', 'true');
+    flyout.setAttribute('aria-hidden', 'false');
+
+    // Show flyout
+    flyout.style.display = 'block';
+
+    // Focus first menu item
+    const firstItem = flyout.querySelector('.flyout-menuItem');
+    if (firstItem) {
+        setTimeout(() => firstItem.focus(), 50);
+    }
+
+    // Add click-outside listener
+    setTimeout(() => {
+        document.addEventListener('click', handleClickOutside);
+    }, 0);
+}
+
+function closeFlyout(buttonElement, flyout) {
+    // Update ARIA attributes
+    buttonElement.setAttribute('aria-expanded', 'false');
+    flyout.setAttribute('aria-hidden', 'true');
+
+    // Hide flyout
+    flyout.style.display = 'none';
+
+    // Remove click-outside listener
+    document.removeEventListener('click', handleClickOutside);
+}
+
+function handleClickOutside(event) {
+    const flyoutContainer = event.target.closest('.flyoutContainer');
+    if (!flyoutContainer) {
+        // Click was outside any flyout, close all
+        document.querySelectorAll('.flyoutContainer').forEach(container => {
+            const button = container.querySelector('.flyoutButton-Button');
+            const flyout = container.querySelector('.flyoutButton-flyOut');
+            if (button && flyout) {
+                closeFlyout(button, flyout);
+            }
+        });
+    }
+}
+
+// Keyboard navigation for menu items
+function handleMenuKeydown(event) {
+    const menuItem = event.target;
+    if (!menuItem.classList.contains('flyout-menuItem')) return;
+
+    const menu = menuItem.closest('.flyoutButton-flyOut');
+    const items = Array.from(menu.querySelectorAll('.flyout-menuItem'));
+    const currentIndex = items.indexOf(menuItem);
+
+    switch(event.key) {
+        case 'ArrowDown':
+            event.preventDefault();
+            const nextIndex = (currentIndex + 1) % items.length;
+            items[nextIndex].focus();
+            break;
+
+        case 'ArrowUp':
+            event.preventDefault();
+            const prevIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+            items[prevIndex].focus();
+            break;
+
+        case 'Escape':
+            const button = menu.closest('.flyoutContainer').querySelector('.flyoutButton-Button');
+            closeFlyout(button, menu);
+            button.focus();
+            break;
+
+        case 'Enter':
+        case ' ':
+            event.preventDefault();
+            menuItem.click();
+            break;
+    }
+}
+
 // Make functions globally accessible
 window.toggleRowSelection = toggleRowSelection;
 window.openCustomerDetails = openCustomerDetails;
+window.toggleFlyout = toggleFlyout;
