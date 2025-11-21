@@ -6,7 +6,10 @@
       "Bash(dir:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "WebFetch(domain:dynamics365musings.com)"
     ],
     "deny": [],
     "ask": []
