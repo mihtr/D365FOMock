@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All customers - Finance and Operations</title>
+    <link rel="stylesheet" href="d365fo-styles.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="nav-left">
+            <button class="hamburger-menu">☰</button>
+            <span class="app-title">Finance and Operations</span>
+        </div>
+        <div class="nav-center">
+            <div class="search-box">
+                <input type="text" placeholder="customer" id="globalSearch">
+                <button class="search-btn">🔍</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <span class="company-info">USMF | Contoso Entertainment Syste...</span>
+            <button class="icon-btn" title="Help">?</button>
+            <button class="icon-btn" title="Settings">⚙</button>
+            <button class="icon-btn" title="Notifications">🔔</button>
+            <button class="icon-btn" title="User">👤</button>
+        </div>
+    </div>
+
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb">
+        <button class="back-btn">←</button>
+        <button class="forward-btn">→</button>
+        <span class="breadcrumb-path">
+            <button class="home-btn">⌂</button>
+        </span>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <button class="sidebar-btn">☰</button>
+            <button class="sidebar-btn">📌</button>
+            <button class="sidebar-btn">🔍</button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Action Pane -->
+            <div class="action-pane">
+                <div class="action-pane-tabs">
+                    <button class="action-tab">✏️ Edit</button>
+                    <button class="action-tab">+ New</button>
+                    <button class="action-tab">🗑 Delete</button>
+                    <button class="action-tab active">Customer</button>
+                    <button class="action-tab">Sell</button>
+                    <button class="action-tab">Invoice</button>
+                    <button class="action-tab">Collect</button>
+                    <button class="action-tab">Projects</button>
+                    <button class="action-tab">Service</button>
+                    <button class="action-tab">Market</button>
+                    <button class="action-tab">Commerce</button>
+                    <button class="action-tab">Price</button>
+                    <button class="action-tab">General</button>
+                    <button class="action-tab">Credit management</button>
+                    <button class="action-tab">Recurring contract billing</button>
+                    <button class="action-tab">Options</button>
+                </div>
+                <div class="action-pane-commands" id="actionCommands">
+                    <div class="command-group">
+                        <button class="command-btn">
+                            <div class="btn-icon">👤</div>
+                            <div class="btn-label">Contacts</div>
+                        </button>
+                        <div class="dropdown-indicator">▼</div>
+                    </div>
+                    <div class="command-group">
+                        <button class="command-btn">
+                            <div class="btn-icon">🔄</div>
+                            <div class="btn-label">Change party association</div>
+                        </button>
+                    </div>
+                    <div class="command-group">
+                        <button class="command-btn">
+                            <div class="btn-icon">📊</div>
+                            <div class="btn-label">Account statement</div>
+                        </button>
+                    </div>
+                    <div class="command-group">
+                        <button class="command-btn">
+                            <div class="btn-icon">💳</div>
+                            <div class="btn-label">Transactions</div>
+                        </button>
+                        <button class="command-btn">
+                            <div class="btn-label">Group transactions</div>
+                        </button>
+                    </div>
+                    <div class="command-group">
+                        <button class="command-btn">
+                            <div class="btn-icon">💰</div>
+                            <div class="btn-label">Balance</div>
+                        </button>
+                        <button class="command-btn">
+                            <div class="btn-label">Aged balance</div>
+                        </button>
+                    </div>
+                    <div class="command-group">
+                        <button class="command-btn">
+                            <div class="btn-icon">📝</div>
+                            <div class="btn-label">Forecast</div>
+                        </button>
+                    </div>
+                    <div class="command-group">
+                        <button class="command-btn">
+                            <div class="btn-icon">🏦</div>
+                            <div class="btn-label">Bank accounts</div>
+                        </button>
+                        <button class="command-btn">
+                            <div class="btn-label">Summary update</div>
+                        </button>
+                        <button class="command-btn">
+                            <div class="btn-label">Credit cards</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Title and View Selector -->
+            <div class="page-header">
+                <div class="page-title-section">
+                    <h1 class="page-title">All customers</h1>
+                    <div class="view-selector">
+                        <label>My view</label>
+                        <button class="dropdown-btn">▼</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Filter -->
+            <div class="quick-filter">
+                <label>Search by</label>
+                <input type="text" class="filter-input" id="quickFilter" placeholder="Filter...">
+                <select class="filter-field-select">
+                    <option>Telephone</option>
+                    <option>Account</option>
+                    <option>Name</option>
+                    <option>Currency</option>
+                </select>
+            </div>
+
+            <!-- Data Grid -->
+            <div class="grid-container">
+                <table class="data-grid" id="customerGrid">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-col"><input type="checkbox" id="selectAll"></th>
+                            <th class="sortable">Account <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Name <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Invoice account <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Customer group <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Currency <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Telephone <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Extension <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Is merged <span class="sort-icon">▼</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="gridBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <span id="recordCount">0 records</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="customer-list-page.js"></script>
+</body>
+</html>

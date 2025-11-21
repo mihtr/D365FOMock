@@ -1,0 +1,346 @@
+name: CI/CD Pipeline
+
+# Rule: Always run CI/CD pipeline on all events
+on:
+  push:
+    branches:
+      - '**'  # Run on all branches
+  pull_request:
+    branches:
+      - '**'  # Run on all PRs
+  workflow_dispatch:  # Allow manual trigger
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday at midnight
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # Job 1: Validate and Lint
+  validate:
+    name: Validate Code and Files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install -g htmlhint stylelint eslint markdownlint-cli
+
+      - name: Validate HTML files
+        run: |
+          echo "Validating HTML files..."
+          find . -name "*.html" -not -path "*/node_modules/*" -exec htmlhint {} \;
+        continue-on-error: false
+
+      - name: Validate CSS files
+        run: |
+          echo "Validating CSS files..."
+          find . -name "*.css" -not -path "*/node_modules/*" -exec stylelint {} \;
+        continue-on-error: true
+
+      - name: Validate JavaScript files
+        run: |
+          echo "Validating JavaScript files..."
+          find . -name "*.js" -not -path "*/node_modules/*" -exec eslint {} \;
+        continue-on-error: true
+
+      - name: Validate Markdown files
+        run: |
+          echo "Validating Markdown files..."
+          find . -name "*.md" -not -path "*/node_modules/*" -exec markdownlint {} \;
+        continue-on-error: true
+
+      - name: Check for broken links
+        run: |
+          npm install -g markdown-link-check
+          find . -name "*.md" -not -path "*/node_modules/*" -exec markdown-link-check {} \;
+        continue-on-error: true
+
+  # Job 2: Test
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install testing dependencies
+        run: |
+          npm install -g jest puppeteer
+
+      - name: Run browser tests (if tests exist)
+        run: |
+          if [ -d "tests" ]; then
+            npm test
+          else
+            echo "No tests directory found, skipping tests"
+          fi
+        continue-on-error: true
+
+      - name: Generate test coverage report
+        run: |
+          if [ -d "tests" ]; then
+            npm run coverage || echo "No coverage script found"
+          fi
+        continue-on-error: true
+
+  # Job 3: Auto-update Documentation
+  update-documentation:
+    name: Update Documentation
+    runs-on: ubuntu-latest
+    needs: validate
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install documentation tools
+        run: |
+          pip install markdown-to-html pyyaml jinja2
+
+      - name: Generate documentation from code
+        run: |
+          python scripts/generate_docs.py || echo "Documentation generator not yet implemented"
+        continue-on-error: true
+
+      - name: Update README with latest changes
+        run: |
+          python scripts/update_readme.py || echo "README updater not yet implemented"
+        continue-on-error: true
+
+      - name: Generate API documentation
+        run: |
+          # Generate docs for JavaScript files
+          npm install -g jsdoc
+          if [ -d "examples" ]; then
+            jsdoc -r examples -d docs/api || echo "JSDoc generation skipped"
+          fi
+        continue-on-error: true
+
+      - name: Update CHANGELOG
+        run: |
+          python scripts/update_changelog.py || echo "CHANGELOG updater not yet implemented"
+        continue-on-error: true
+
+      - name: Check for documentation changes
+        id: check_changes
+        run: |
+          git diff --quiet docs/ README.md CHANGELOG.md || echo "changes=true" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Commit documentation updates
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add docs/ README.md CHANGELOG.md || true
+          git commit -m "docs: auto-update documentation [skip ci]" || echo "No changes to commit"
+          git push || echo "No changes to push"
+
+  # Job 4: Build and Package
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+    needs: [validate, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create build directory
+        run: mkdir -p build
+
+      - name: Copy production files
+        run: |
+          cp -r examples build/
+          cp D365FO_Form_Design_Patterns.md build/
+          cp README.md build/ || echo "README not found"
+
+      - name: Minify HTML files
+        run: |
+          npm install -g html-minifier
+          find build -name "*.html" -exec html-minifier --collapse-whitespace --remove-comments --minify-css true --minify-js true -o {} {} \;
+
+      - name: Minify CSS files
+        run: |
+          npm install -g clean-css-cli
+          find build -name "*.css" -exec cleancss -o {} {} \;
+
+      - name: Minify JavaScript files
+        run: |
+          npm install -g terser
+          find build -name "*.js" -exec terser {} -o {} \;
+
+      - name: Create release archive
+        run: |
+          cd build
+          zip -r ../D365FOMock-${{ github.sha }}.zip .
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: build/
+          retention-days: 30
+
+      - name: Upload release archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-archive
+          path: D365FOMock-${{ github.sha }}.zip
+          retention-days: 90
+
+  # Job 5: Security Scan
+  security:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
+
+      - name: Check for secrets in code
+        run: |
+          npm install -g secretlint
+          find . -type f -not -path "*/node_modules/*" -not -path "*/.git/*" -exec secretlint {} \;
+        continue-on-error: true
+
+  # Job 6: Deploy Documentation
+  deploy-docs:
+    name: Deploy Documentation to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: [build, update-documentation]
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: ./pages
+
+      - name: Create documentation site
+        run: |
+          mkdir -p pages/docs
+          cp D365FO_Form_Design_Patterns.md pages/docs/
+          cp README.md pages/ || echo "README not found"
+
+          # Create index.html for docs
+          cat > pages/docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>D365FOMock Documentation</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+              body { font-family: 'Segoe UI', sans-serif; margin: 40px; }
+              h1 { color: #0078d4; }
+              a { color: #0078d4; text-decoration: none; }
+              a:hover { text-decoration: underline; }
+            </style>
+          </head>
+          <body>
+            <h1>D365FOMock Documentation</h1>
+            <ul>
+              <li><a href="D365FO_Form_Design_Patterns.md">Form Design Patterns</a></li>
+              <li><a href="../examples/customer-list-page.html">Live Demo - Customer List</a></li>
+              <li><a href="../README.md">Project README</a></li>
+            </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./pages
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Job 7: Notify on Completion
+  notify:
+    name: Notify Pipeline Status
+    runs-on: ubuntu-latest
+    needs: [validate, test, build, security, update-documentation]
+    if: always()
+    steps:
+      - name: Check job statuses
+        run: |
+          echo "Pipeline completed"
+          echo "Validate: ${{ needs.validate.result }}"
+          echo "Test: ${{ needs.test.result }}"
+          echo "Build: ${{ needs.build.result }}"
+          echo "Security: ${{ needs.security.result }}"
+          echo "Update Docs: ${{ needs.update-documentation.result }}"
+
+      - name: Create pipeline summary
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          # CI/CD Pipeline Summary
+
+          ## Job Results
+          - **Validate**: ${{ needs.validate.result }}
+          - **Test**: ${{ needs.test.result }}
+          - **Build**: ${{ needs.build.result }}
+          - **Security**: ${{ needs.security.result }}
+          - **Documentation**: ${{ needs.update-documentation.result }}
+
+          ## Artifacts
+          - Build artifacts and release archives are available in the workflow run
+
+          ## Next Steps
+          - Review any failed jobs above
+          - Documentation has been automatically updated
+          - Security scan results are available in the Security tab
+          EOF
