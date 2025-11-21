@@ -1,0 +1,1 @@
+var $dyn;(function($dyn){$dyn.userBrandingLicense=(function(){try{return JSON.parse('{"ProductBrandingName":"Finance and Operations","ProductShortName":"Finance and Operations","ProductSKU":"fin"}');}catch(e){return {};}})()})($dyn||($dyn={}))

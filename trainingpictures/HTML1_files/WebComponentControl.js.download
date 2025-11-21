@@ -1,0 +1,205 @@
+(function () {
+    'use strict';
+
+    $dyn.controls.WebComponentControl = function (data, element) {
+        const self = this;
+
+        $dyn.ui.Control.apply(this, arguments);
+
+        // Function for initial loading of the component. Subsequent
+        // renders will be triggered from observing changes in the
+        // componentModel control property
+        const loadInitialComponent = () => {
+            return new Promise((resolve) => {
+                const asyncCall = () => {
+                    $dyn.callFunction(
+                        self.loadComponentModel,
+                        self,
+                        {},
+                        (result) => {
+                            if (result) {
+                                resolve(JSON.parse(result));
+                            }
+                            else {
+                                resolve();
+                            }
+                        });
+                };
+
+                window.setTimeout(asyncCall, 0);
+            });
+        };
+
+        // Function indicates to the parent control that
+        // the underlying React component has completed rendering
+        const onComponentLoaded = () => {
+            return new Promise((resolve) => {
+                const asyncCall = () => {
+                    $dyn.callFunction(
+                        self.onComponentLoaded,
+                        self,
+                        {},
+                        () => resolve());
+                };
+
+                window.setTimeout(asyncCall, 0);
+            });
+        }
+
+        // Function routes an action execution from the client up to
+        // the server component for handling in X++
+        const invokeAction = (action) => {
+            return new Promise(res => {
+                const asyncCall = () => {
+                    $dyn.callFunction(
+                        self.invokeAction,
+                        self,
+                        {
+                            actionId: action.id,
+                            actionName: action.name,
+                            actionPayload: action.data,
+                            actionCustomDimensions: action.customDimensions ? JSON.stringify(action.customDimensions) : ''
+                        },
+                        (response) => {
+                            res(response);
+                        });
+                };
+
+                window.setTimeout(asyncCall, 0);
+            });
+        }
+
+        const registerComponentObserver = (onUpdate) => {
+            $dyn.observe(self.componentModel, function (model) {
+                if (model) {
+                    const parsedModel = JSON.parse(model);
+                    onUpdate(parsedModel);
+                }
+            });
+        }
+
+        // Initialize observers for the componentModel control property.
+        // This property will change on server side re-rendering of the component
+        // and should trigger a subsequent client size re-rendering.
+        const componentUpdateObservers = [];
+
+        $dyn.observe(self.componentModel, function (model) {
+            if (model) {
+                const parsedModel = JSON.parse(model);
+                componentUpdateObservers.forEach(obv => obv(parsedModel));
+            }
+        });
+
+        const themeUpdateObservers = [];
+
+        // Notifies all theme observers with the latest theme
+        const notifyThemeObservers = () => {
+            const webComponentTheme = buildComponentTheme();
+            themeUpdateObservers.forEach(obv => obv(webComponentTheme));
+        };
+        // Use jQuery's document ready handler to run code on initial load
+        $(document).ready(() => {
+            $dyn.ui.theme.invalidate();
+            setTimeout(notifyThemeObservers, 100);
+        });
+        // Listen for density changes and notify observers
+        $(document).on("densitychanged", (evt, newDensity) => {
+            $dyn.ui.theme.invalidate();
+            setTimeout(notifyThemeObservers, 100);
+        });
+
+        const webComponentFactory = new globalThis.WebComponents.WebComponentFactory();
+        const webComponentTelemetry = buildComponentTelemetryService(this);
+        const webComponentAttributes = buildComponentAttributes(data);
+        const webComponentErrorHandling = buildComponentErrorHandling(data);
+        const webComponentTheme = buildComponentTheme();
+
+        const webComponentSurface = webComponentFactory.buildWebComponent({
+            client: 'FinOps',
+            loadInitialComponent,
+            onComponentLoaded,
+            componentUpdateObservers,
+            invokeAction,
+            attributes: webComponentAttributes,
+            errorHandling: webComponentErrorHandling,
+            telemetry: webComponentTelemetry,
+            registerComponentObserver,
+            theming: {
+                clientTheme: webComponentTheme,
+                registerThemeUpdateObserver: (obv) => themeUpdateObservers.push(obv)
+            }
+        });
+
+        if (webComponentSurface) {
+            ReactDOM.render(webComponentSurface, element);
+        }
+    }
+
+    function buildComponentTelemetryService(control) {
+        return {
+            logMessage: (message) => {
+                // console.log('INFO: ' + message);
+            },
+            logWarning: (message) => {
+                // console.warn(`WARNING: ${message}`, dimensions);
+                control.logWarning(message);
+            },
+            logError: (error) => {
+                // console.error(`ERROR: ${message}`, dimensions);
+                control.logError(error);
+            }
+        }
+    }
+
+    function buildComponentAttributes(data) {
+        const webComponentAttributes = {};
+
+        if (data.PaddingLeft() > 0) {
+            webComponentAttributes.paddingLeft = data.PaddingLeft();
+        }
+
+        if (data.PaddingRight() > 0) {
+            webComponentAttributes.paddingRight = data.PaddingRight();
+        }
+
+        if (data.PaddingTop() > 0) {
+            webComponentAttributes.paddingTop = data.PaddingTop();
+        }
+
+        if (data.PaddingBottom() > 0) {
+            webComponentAttributes.paddingBottom = data.PaddingBottom();
+        }
+
+        if (data.HideLoader() === 'Yes') {
+            webComponentAttributes.hideLoader = true;
+        }
+
+        return webComponentAttributes;
+    }
+
+    function buildComponentTheme() {
+        const finOpsTheme = $dyn.ui.theme.get();
+        
+        return {
+            ...finOpsTheme,
+            isHighDensity: finOpsTheme.subUnit === '7px',
+            isHighContrast: finOpsTheme.workspaceBackground === '#ffffff',
+            accentLightest: finOpsTheme.accentLightLightLight,
+            highContrastOverride: {
+                background: finOpsTheme.workspaceBackground,
+                foreground: finOpsTheme.titleText
+            }
+        };
+    }
+
+    function buildComponentErrorHandling(data) {
+        const webComponentErrorHandling = {
+            errorMessage: data.ErrorMessage(),
+            errorDetails: data.ErrorDetails()
+        };
+
+        return webComponentErrorHandling;
+    }
+
+    $dyn.controls.WebComponentControl.prototype = $dyn.extendPrototype($dyn.ui.Control.prototype, {});
+}());

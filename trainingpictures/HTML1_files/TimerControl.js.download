@@ -1,0 +1,59 @@
+// ---------------------------------------------------------------------
+// <copyright file="TimerControl.js" company="Microsoft">
+//      Copyright (c) Microsoft Corporation.  All rights reserved.
+// </copyright>
+// ---------------------------------------------------------------------
+
+$dyn.controls.TimerControl = function (propertyValues) {
+    // To be safe always use self instead of this
+    var self = this;
+    $dyn.ui.Control.apply(this, arguments);
+
+    // Hard set minimum interval, in seconds
+    self.MinimumInterval = 1;
+	
+    // Called after server command returns to the client
+    // nextInterval parameter is the return of the server elapsed() method, which can be overriden in form xpp
+    self.ResetTimer = function (nextInterval) {
+        if ($dyn.value(propertyValues.Enabled)) {
+            self.timerId = self.setTimeout(self.IntervalElapsed, Math.max(self.MinimumInterval, nextInterval) * 1000);
+        }
+    }
+
+    self.IntervalElapsed = function () {
+        // Call the elapsed command on the server
+        // When command returns the ResetTimer function will be called
+        // First parameter means there are no parameters to the server
+        $dyn.callFunction(propertyValues.Elapsed, self, [], self.ResetTimer);
+
+        // Calling serverForm is an anti-pattern for extensible controls, this is an exception that should be removed when practical.
+        $dyn.serverForm && $dyn.serverForm.resetSessionTimeout();
+    }
+
+    // Observe the Enabled property and set or clear a timeout
+    self.usingDisposable($dyn.observe(propertyValues.Enabled, function (value) {
+        if (value == true) {
+            if (!self.timerId) {
+                // timeout is set to the duration of the interval property
+                // IntervalElapsed function will be called on timeout
+                self.timerId = self.setTimeout(self.IntervalElapsed, Math.max(self.MinimumInterval, $dyn.value(propertyValues.Interval)) * 1000);
+            }
+        }
+        else {
+            if (self.timerId) {
+                clearTimeout(self.timerId);
+                self.timerId = null;
+            }
+        }
+    }));
+
+    //Observe the Interval property and reset the timer if the interval ever changes.
+    self.usingDisposable($dyn.observe(propertyValues.Interval, function () {
+        if (self.timerId) {
+            clearTimeout(self.timerId);
+            self.timerId = self.setTimeout(self.IntervalElapsed, Math.max(self.MinimumInterval, $dyn.value(propertyValues.Interval)) * 1000);
+        }
+    }));
+};
+
+$dyn.controls.TimerControl.prototype = $dyn.extendPrototype($dyn.ui.Control.prototype, {});
