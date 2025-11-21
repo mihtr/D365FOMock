@@ -4,10 +4,31 @@ This is a fully functional, browser-based mockup of a Dynamics 365 Finance and O
 
 ## Files
 
-- `customer-list-page.html` - Main HTML structure
-- `d365fo-styles.css` - Complete D365FO styling
+- `customer-list-page.html` - Main HTML structure (Updated 2025-11-21)
+- `d365fo-styles.css` - Complete D365FO styling with CSS variables (Updated 2025-11-21)
 - `customer-list-page.js` - Interactive functionality
 - `README.md` - This file
+
+## Recent Updates (2025-11-21)
+
+### Enhanced with Screenshot Analysis
+The example has been updated with precise specifications extracted from actual D365FO screenshots:
+
+**CSS Improvements**:
+- ✅ Added CSS variables for exact D365FO color palette
+- ✅ Refined typography to match screenshots
+- ✅ Improved spacing using verified measurements
+- ✅ Enhanced transitions and animations (0.2s ease)
+- ✅ Better focus states with 2px blue borders
+- ✅ Firefox scrollbar support added
+- ✅ All colors now use CSS variables for consistency
+
+**Color Accuracy**:
+- Primary Blue: `#0078d4` (verified from screenshots)
+- Sidebar Blue: `#2b579a` (verified from screenshots)
+- Selected Row: `#deecf9` (verified from screenshots)
+- Background Gray: `#f3f2f1` (verified from screenshots)
+- All 15 D365FO colors documented and applied
 
 ## Features
 
