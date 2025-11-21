@@ -60,7 +60,7 @@ body {
 
 /* Top Navigation Bar */
 .top-nav {
-    background-color: var(--d365-blue-primary);
+    background-color: #2B7CD3; /* Lighter blue to match actual interface */
     color: var(--d365-white);
     height: var(--nav-height);
     display: flex;
@@ -223,30 +223,69 @@ body {
     overflow: hidden;
 }
 
-/* Action Pane */
+/* Action Pane - FIXED: Single row layout matching actual interface */
 .action-pane {
     background-color: var(--d365-white);
     border-bottom: 1px solid var(--d365-gray-medium);
+    display: flex;
+    align-items: center;
+    padding: var(--padding-sm) var(--padding-lg);
+    gap: var(--padding-md);
+    overflow-x: auto;
+    height: 48px;
 }
 
-.action-pane-tabs {
+/* Action Buttons (Edit, New, Delete) */
+.action-buttons {
     display: flex;
     gap: var(--padding-xs);
-    padding: var(--padding-sm) var(--padding-lg) 0 var(--padding-lg);
+    padding-right: var(--padding-md);
+    border-right: 1px solid var(--d365-gray-medium);
+}
+
+.action-button {
+    background: none;
+    border: 1px solid var(--d365-gray);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: var(--font-size-base);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: var(--d365-gray-lighter);
+    border-color: var(--d365-blue-primary);
+}
+
+.action-button-icon {
+    font-size: 14px;
+}
+
+/* Tabs Section - Now inline with action buttons */
+.action-pane-tabs {
+    display: flex;
+    gap: var(--padding-sm);
+    flex: 1;
     overflow-x: auto;
-    border-bottom: 2px solid var(--d365-gray-medium);
 }
 
 .action-tab {
     background: none;
     border: none;
-    padding: var(--padding-sm) var(--padding-lg);
+    padding: var(--padding-sm) var(--padding-md);
     cursor: pointer;
-    font-size: var(--font-size-base);
+    font-size: 13px;
     white-space: nowrap;
-    border-radius: 2px 2px 0 0;
     position: relative;
     transition: all 0.2s ease;
+    height: 32px;
+    display: flex;
+    align-items: center;
 }
 
 .action-tab:hover {
@@ -254,27 +293,13 @@ body {
 }
 
 .action-tab.active {
-    background-color: var(--d365-white);
     font-weight: var(--font-weight-semibold);
+    background-color: var(--d365-gray-lighter);
 }
 
-.action-tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: var(--d365-blue-primary);
-}
-
+/* Remove the old commands section */
 .action-pane-commands {
-    display: flex;
-    gap: 24px;
-    padding: var(--padding-md) var(--padding-lg);
-    overflow-x: auto;
-    background-color: var(--d365-gray-lightest);
-    border-bottom: 1px solid var(--d365-gray-medium);
+    display: none; /* Hidden - commands now integrated into single row */
 }
 
 .command-group {
@@ -331,7 +356,7 @@ body {
 }
 
 .page-title {
-    font-size: var(--font-size-xlarge);
+    font-size: 18px; /* Reduced from 21px to match actual interface */
     font-weight: var(--font-weight-semibold);
     color: var(--d365-gray-darkest);
 }
@@ -419,7 +444,7 @@ body {
 .data-grid thead {
     position: sticky;
     top: 0;
-    background-color: var(--d365-gray-lighter);
+    background-color: #fafafa; /* Near white to match actual interface */
     z-index: 10;
 }
 
@@ -444,8 +469,21 @@ body {
 
 .sort-icon {
     font-size: 10px;
-    color: #999;
+    color: var(--d365-gray-darker);
     margin-left: 4px;
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 0.5;
+}
+
+.sort-icon::before {
+    content: '▲';
+    font-size: 8px;
+}
+
+.sort-icon::after {
+    content: '▼';
+    font-size: 8px;
 }
 
 .checkbox-col {
@@ -467,11 +505,11 @@ body {
 }
 
 .data-grid tbody tr.selected {
-    background-color: var(--d365-blue-light);
+    background-color: #e8f4fd; /* Lighter blue tint to match actual interface */
 }
 
 .data-grid tbody tr.selected:hover {
-    background-color: var(--d365-blue-hover);
+    background-color: #d0e9fb; /* Lighter hover state */
 }
 
 .data-grid a {

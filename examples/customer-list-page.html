@@ -66,12 +66,26 @@
 
         <!-- Main Content Area -->
         <div class="content-area">
-            <!-- Action Pane -->
+            <!-- Action Pane - FIXED: Single row layout -->
             <div class="action-pane">
+                <!-- Action Buttons (Edit, New, Delete) -->
+                <div class="action-buttons">
+                    <button class="action-button">
+                        <span class="action-button-icon">✏️</span>
+                        <span>Edit</span>
+                    </button>
+                    <button class="action-button">
+                        <span class="action-button-icon">➕</span>
+                        <span>New</span>
+                    </button>
+                    <button class="action-button">
+                        <span class="action-button-icon">🗑</span>
+                        <span>Delete</span>
+                    </button>
+                </div>
+
+                <!-- Tabs Section -->
                 <div class="action-pane-tabs">
-                    <button class="action-tab">✏️ Edit</button>
-                    <button class="action-tab">+ New</button>
-                    <button class="action-tab">🗑 Delete</button>
                     <button class="action-tab active">Customer</button>
                     <button class="action-tab">Sell</button>
                     <button class="action-tab">Invoice</button>
@@ -86,7 +100,10 @@
                     <button class="action-tab">Recurring contract billing</button>
                     <button class="action-tab">Options</button>
                 </div>
-                <div class="action-pane-commands" id="actionCommands">
+            </div>
+
+            <!-- Old command section - now hidden by CSS -->
+            <div class="action-pane-commands" id="actionCommands" style="display:none;">
                     <div class="command-group">
                         <button class="command-btn">
                             <div class="btn-icon">👤</div>
@@ -174,14 +191,14 @@
                     <thead>
                         <tr>
                             <th class="checkbox-col"><input type="checkbox" id="selectAll"></th>
-                            <th class="sortable">Account <span class="sort-icon">▼</span></th>
-                            <th class="sortable">Name <span class="sort-icon">▼</span></th>
-                            <th class="sortable">Invoice account <span class="sort-icon">▼</span></th>
-                            <th class="sortable">Customer group <span class="sort-icon">▼</span></th>
-                            <th class="sortable">Currency <span class="sort-icon">▼</span></th>
-                            <th class="sortable">Telephone <span class="sort-icon">▼</span></th>
-                            <th class="sortable">Extension <span class="sort-icon">▼</span></th>
-                            <th class="sortable">Is merged <span class="sort-icon">▼</span></th>
+                            <th class="sortable">Account <span class="sort-icon"></span></th>
+                            <th class="sortable">Name <span class="sort-icon"></span></th>
+                            <th class="sortable">Invoice account <span class="sort-icon"></span></th>
+                            <th class="sortable">Customer group <span class="sort-icon"></span></th>
+                            <th class="sortable">Currency <span class="sort-icon"></span></th>
+                            <th class="sortable">Telephone <span class="sort-icon"></span></th>
+                            <th class="sortable">Extension <span class="sort-icon"></span></th>
+                            <th class="sortable">Is merged <span class="sort-icon"></span></th>
                         </tr>
                     </thead>
                     <tbody id="gridBody">
