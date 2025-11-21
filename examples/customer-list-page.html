@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <!--
-    D365FO Customer List Page - Updated Example
+    D365FO Customer List Page - Updated with Actual Class Names
     Pattern: List Page
 
     Updates Applied (2025-11-21):
-    - Enhanced CSS with exact D365FO color palette from screenshot analysis
-    - Added CSS variables for consistent theming
-    - Refined typography to match specifications
-    - Improved spacing using standard D365FO measurements
-    - Enhanced transitions and hover effects
-    - Updated focus states for better accessibility
-    - Added Firefox scrollbar support
+    - Using ACTUAL D365FO class names from HTML1.html analysis
+    - .top-nav → .navigationBar
+    - .action-pane → .actionPane
+    - .action-tab → .appBarTab with .appBarTab-header
+    - .quick-filter → .quickFilter
+    - .data-grid → .dyn-grid with proper D365FO grid classes
+    - Button structure updated with .button-container, .button-commandRing, .button-label
+    - Added data-dyn-* attributes for authenticity
 
-    Based on analyses from:
-    - Customer list screenshot (provided-screenshots-analysis.md)
-    - UI specifications (ui-specifications.md)
-    - Sales order screenshot (sales-order-analysis.md)
-    - Navigation menu screenshot (navigation-menu-analysis.md)
+    Based on actual D365FO HTML structure analysis (HTML1.html)
 -->
 <head>
     <meta charset="UTF-8">
@@ -26,11 +23,13 @@
     <link rel="stylesheet" href="d365fo-styles.css">
 </head>
 <body>
-    <!-- Top Navigation Bar -->
-    <div class="top-nav">
-        <div class="nav-left">
-            <button class="hamburger-menu">☰</button>
-            <span class="app-title">Finance and Operations</span>
+    <!-- Navigation Bar (Actual D365FO Classes) -->
+    <div class="navigationBar" data-dyn-role="NavigationBar">
+        <div class="navigationBar-launch">
+            <button class="navigationBar-symbolButton" title="Open navigation">☰</button>
+            <button class="navigationBar-dashboardButton">
+                <span class="app-title">Finance and Operations</span>
+            </button>
         </div>
         <div class="nav-center">
             <div class="search-box">
@@ -38,7 +37,7 @@
                 <button class="search-btn">🔍</button>
             </div>
         </div>
-        <div class="nav-right">
+        <div class="navigationBar-actions">
             <span class="company-info">USMF | Contoso Entertainment Syste...</span>
             <button class="icon-btn" title="Help">?</button>
             <button class="icon-btn" title="Settings">⚙</button>
@@ -66,99 +65,95 @@
 
         <!-- Main Content Area -->
         <div class="content-area">
-            <!-- Action Pane - FIXED: Single row layout -->
-            <div class="action-pane">
-                <!-- Action Buttons (Edit, New, Delete) -->
-                <div class="action-buttons">
-                    <button class="action-button">
-                        <span class="action-button-icon">✏️</span>
-                        <span>Edit</span>
+            <!-- Action Pane (Actual D365FO Structure) -->
+            <div class="actionPane" data-dyn-role="ActionPane">
+                <!-- Action Buttons Group -->
+                <div class="actionPane-buttons">
+                    <button class="button dynamicsButton" data-dyn-role="Button" data-dyn-controlname="SystemDefinedViewEditButton">
+                        <div class="button-container">
+                            <span class="button-commandRing">✏️</span>
+                            <span class="button-label">Edit</span>
+                        </div>
                     </button>
-                    <button class="action-button">
-                        <span class="action-button-icon">➕</span>
-                        <span>New</span>
+                    <button class="button dynamicsButton" data-dyn-role="Button" data-dyn-controlname="NewCustomer">
+                        <div class="button-container">
+                            <span class="button-commandRing">➕</span>
+                            <span class="button-label">New</span>
+                        </div>
                     </button>
-                    <button class="action-button">
-                        <span class="action-button-icon">🗑</span>
-                        <span>Delete</span>
+                    <button class="button dynamicsButton" data-dyn-role="Button" data-dyn-controlname="DeleteButton">
+                        <div class="button-container">
+                            <span class="button-commandRing">🗑</span>
+                            <span class="button-label">Delete</span>
+                        </div>
                     </button>
                 </div>
 
-                <!-- Tabs Section -->
-                <div class="action-pane-tabs">
-                    <button class="action-tab active">Customer</button>
-                    <button class="action-tab">Sell</button>
-                    <button class="action-tab">Invoice</button>
-                    <button class="action-tab">Collect</button>
-                    <button class="action-tab">Projects</button>
-                    <button class="action-tab">Service</button>
-                    <button class="action-tab">Market</button>
-                    <button class="action-tab">Commerce</button>
-                    <button class="action-tab">Price</button>
-                    <button class="action-tab">General</button>
-                    <button class="action-tab">Credit management</button>
-                    <button class="action-tab">Recurring contract billing</button>
-                    <button class="action-tab">Options</button>
+                <!-- App Bar Tabs -->
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabCustomer">
+                    <button class="appBarTab-header active">
+                        <span class="appBarTab-headerLabel">Customer</span>
+                    </button>
                 </div>
-            </div>
-
-            <!-- Old command section - now hidden by CSS -->
-            <div class="action-pane-commands" id="actionCommands" style="display:none;">
-                    <div class="command-group">
-                        <button class="command-btn">
-                            <div class="btn-icon">👤</div>
-                            <div class="btn-label">Contacts</div>
-                        </button>
-                        <div class="dropdown-indicator">▼</div>
-                    </div>
-                    <div class="command-group">
-                        <button class="command-btn">
-                            <div class="btn-icon">🔄</div>
-                            <div class="btn-label">Change party association</div>
-                        </button>
-                    </div>
-                    <div class="command-group">
-                        <button class="command-btn">
-                            <div class="btn-icon">📊</div>
-                            <div class="btn-label">Account statement</div>
-                        </button>
-                    </div>
-                    <div class="command-group">
-                        <button class="command-btn">
-                            <div class="btn-icon">💳</div>
-                            <div class="btn-label">Transactions</div>
-                        </button>
-                        <button class="command-btn">
-                            <div class="btn-label">Group transactions</div>
-                        </button>
-                    </div>
-                    <div class="command-group">
-                        <button class="command-btn">
-                            <div class="btn-icon">💰</div>
-                            <div class="btn-label">Balance</div>
-                        </button>
-                        <button class="command-btn">
-                            <div class="btn-label">Aged balance</div>
-                        </button>
-                    </div>
-                    <div class="command-group">
-                        <button class="command-btn">
-                            <div class="btn-icon">📝</div>
-                            <div class="btn-label">Forecast</div>
-                        </button>
-                    </div>
-                    <div class="command-group">
-                        <button class="command-btn">
-                            <div class="btn-icon">🏦</div>
-                            <div class="btn-label">Bank accounts</div>
-                        </button>
-                        <button class="command-btn">
-                            <div class="btn-label">Summary update</div>
-                        </button>
-                        <button class="command-btn">
-                            <div class="btn-label">Credit cards</div>
-                        </button>
-                    </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabSell">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Sell</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabInvoice">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Invoice</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabCollect">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Collect</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabProjects">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Projects</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabService">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Service</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabMarket">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Market</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabRetail">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Commerce</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabPricing">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Price</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabGeneral">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">General</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabCredit">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Credit management</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="SubBillTab">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Recurring contract billing</span>
+                    </button>
+                </div>
+                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabOptions">
+                    <button class="appBarTab-header">
+                        <span class="appBarTab-headerLabel">Options</span>
+                    </button>
                 </div>
             </div>
 
@@ -173,11 +168,11 @@
                 </div>
             </div>
 
-            <!-- Quick Filter -->
-            <div class="quick-filter">
+            <!-- Quick Filter (Actual D365FO Classes) -->
+            <div class="quickFilter" data-dyn-role="QuickFilter" data-dyn-controlname="QuickFilterControl">
                 <label>Search by</label>
-                <input type="text" class="filter-input" id="quickFilter" placeholder="Filter...">
-                <select class="filter-field-select">
+                <input type="text" class="filter-input" id="quickFilter" placeholder="Filter..." aria-label="Quick filter">
+                <select class="filter-field-select" aria-label="Filter field">
                     <option>Telephone</option>
                     <option>Account</option>
                     <option>Name</option>
@@ -185,23 +180,49 @@
                 </select>
             </div>
 
-            <!-- Data Grid -->
+            <!-- Data Grid (Actual D365FO Classes - Simplified Structure) -->
             <div class="grid-container">
-                <table class="data-grid" id="customerGrid">
-                    <thead>
-                        <tr>
-                            <th class="checkbox-col"><input type="checkbox" id="selectAll"></th>
-                            <th class="sortable">Account <span class="sort-icon"></span></th>
-                            <th class="sortable">Name <span class="sort-icon"></span></th>
-                            <th class="sortable">Invoice account <span class="sort-icon"></span></th>
-                            <th class="sortable">Customer group <span class="sort-icon"></span></th>
-                            <th class="sortable">Currency <span class="sort-icon"></span></th>
-                            <th class="sortable">Telephone <span class="sort-icon"></span></th>
-                            <th class="sortable">Extension <span class="sort-icon"></span></th>
-                            <th class="sortable">Is merged <span class="sort-icon"></span></th>
+                <table class="dyn-grid" id="customerGrid" role="grid">
+                    <thead class="dyn-grid-header">
+                        <tr role="row">
+                            <th class="checkbox-col dyn-headerCell">
+                                <input type="checkbox" id="selectAll" aria-label="Select all">
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_AccountNum">
+                                <div class="dyn-headerCellLabel">Account</div>
+                                <span class="sort-icon"></span>
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_Name">
+                                <div class="dyn-headerCellLabel">Name</div>
+                                <span class="sort-icon"></span>
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_InvoiceAccount">
+                                <div class="dyn-headerCellLabel">Invoice account</div>
+                                <span class="sort-icon"></span>
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_CustGroup">
+                                <div class="dyn-headerCellLabel">Customer group</div>
+                                <span class="sort-icon"></span>
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_Currency">
+                                <div class="dyn-headerCellLabel">Currency</div>
+                                <span class="sort-icon"></span>
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_Phone">
+                                <div class="dyn-headerCellLabel">Telephone</div>
+                                <span class="sort-icon"></span>
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_PhoneLocal">
+                                <div class="dyn-headerCellLabel">Extension</div>
+                                <span class="sort-icon"></span>
+                            </th>
+                            <th class="dyn-headerCell sortable" data-dyn-columnname="MCRMerged">
+                                <div class="dyn-headerCellLabel">Is merged</div>
+                                <span class="sort-icon"></span>
+                            </th>
                         </tr>
                     </thead>
-                    <tbody id="gridBody">
+                    <tbody class="dyn-grid-body" id="gridBody">
                         <!-- Data will be populated by JavaScript -->
                     </tbody>
                 </table>

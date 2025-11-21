@@ -1,5 +1,5 @@
 /* D365FO Styling - Customer List Page */
-/* Updated with specifications from screenshot analysis */
+/* Updated with ACTUAL D365FO class names from HTML1.html analysis (2025-11-21) */
 
 /* CSS Variables - Exact D365FO Color Palette */
 :root {
@@ -58,9 +58,12 @@ body {
     overflow-x: hidden;
 }
 
-/* Top Navigation Bar */
-.top-nav {
-    background-color: #2B7CD3; /* Lighter blue to match actual interface */
+/* ============================================
+   Navigation Bar (Actual D365FO Classes)
+   ============================================ */
+
+.navigationBar {
+    background-color: #2B7CD3;
     color: var(--d365-white);
     height: var(--nav-height);
     display: flex;
@@ -75,13 +78,27 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.nav-left {
+.navigationBar-launch {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.hamburger-menu {
+.navigationBar-symbolButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 2px;
+}
+
+.navigationBar-symbolButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navigationBar-dashboardButton {
     background: none;
     border: none;
     color: white;
@@ -90,7 +107,7 @@ body {
     padding: 8px;
 }
 
-.hamburger-menu:hover {
+.navigationBar-dashboardButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -128,7 +145,7 @@ body {
     font-size: 14px;
 }
 
-.nav-right {
+.navigationBar-actions {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -153,7 +170,10 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Breadcrumb Navigation */
+/* ============================================
+   Breadcrumb Navigation
+   ============================================ */
+
 .breadcrumb {
     background-color: var(--d365-white);
     border-bottom: 1px solid var(--d365-gray-medium);
@@ -183,14 +203,20 @@ body {
     background-color: var(--d365-gray-lighter);
 }
 
-/* Main Container */
+/* ============================================
+   Main Container
+   ============================================ */
+
 .main-container {
     display: flex;
     margin-top: 88px;
     height: calc(100vh - 88px);
 }
 
-/* Sidebar */
+/* ============================================
+   Sidebar
+   ============================================ */
+
 .sidebar {
     width: var(--sidebar-width);
     background-color: var(--d365-blue-dark);
@@ -214,7 +240,10 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Content Area */
+/* ============================================
+   Content Area
+   ============================================ */
+
 .content-area {
     flex: 1;
     background-color: var(--d365-white);
@@ -223,8 +252,11 @@ body {
     overflow: hidden;
 }
 
-/* Action Pane - FIXED: Single row layout matching actual interface */
-.action-pane {
+/* ============================================
+   Action Pane (Actual D365FO Classes)
+   ============================================ */
+
+.actionPane {
     background-color: var(--d365-white);
     border-bottom: 1px solid var(--d365-gray-medium);
     display: flex;
@@ -235,46 +267,53 @@ body {
     height: 48px;
 }
 
-/* Action Buttons (Edit, New, Delete) */
-.action-buttons {
+/* Action Buttons Group (Edit, New, Delete) */
+.actionPane-buttons {
     display: flex;
     gap: var(--padding-xs);
     padding-right: var(--padding-md);
     border-right: 1px solid var(--d365-gray-medium);
 }
 
-.action-button {
+.button.dynamicsButton {
     background: none;
     border: 1px solid var(--d365-gray);
     padding: 6px 12px;
     cursor: pointer;
     font-size: var(--font-size-base);
-    display: flex;
-    align-items: center;
-    gap: 6px;
     border-radius: 2px;
     white-space: nowrap;
     transition: all 0.2s ease;
 }
 
-.action-button:hover {
+.button.dynamicsButton:hover {
     background-color: var(--d365-gray-lighter);
     border-color: var(--d365-blue-primary);
 }
 
-.action-button-icon {
+.button-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.button-commandRing {
     font-size: 14px;
 }
 
-/* Tabs Section - Now inline with action buttons */
-.action-pane-tabs {
-    display: flex;
-    gap: var(--padding-sm);
-    flex: 1;
-    overflow-x: auto;
+.button-label {
+    font-size: var(--font-size-base);
 }
 
-.action-tab {
+/* App Bar Tabs (Actual D365FO Classes) */
+.appBarTab {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.appBarTab-header {
     background: none;
     border: none;
     padding: var(--padding-sm) var(--padding-md);
@@ -288,63 +327,23 @@ body {
     align-items: center;
 }
 
-.action-tab:hover {
+.appBarTab-header:hover {
     background-color: var(--d365-gray-lighter);
 }
 
-.action-tab.active {
+.appBarTab-header.active {
     font-weight: var(--font-weight-semibold);
     background-color: var(--d365-gray-lighter);
 }
 
-/* Remove the old commands section */
-.action-pane-commands {
-    display: none; /* Hidden - commands now integrated into single row */
+.appBarTab-headerLabel {
+    font-size: 13px;
 }
 
-.command-group {
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-    position: relative;
-}
+/* ============================================
+   Page Header
+   ============================================ */
 
-.command-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 8px;
-    border-radius: 2px;
-    min-width: 60px;
-}
-
-.command-btn:hover {
-    background-color: var(--d365-gray-medium);
-}
-
-.btn-icon {
-    font-size: 20px;
-}
-
-.btn-label {
-    font-size: var(--font-size-small);
-    text-align: center;
-    line-height: 1.2;
-}
-
-.dropdown-indicator {
-    font-size: var(--font-size-xsmall);
-    color: var(--d365-gray-darker);
-    position: absolute;
-    bottom: var(--padding-sm);
-    right: -4px;
-}
-
-/* Page Header */
 .page-header {
     padding: var(--padding-lg) var(--padding-lg) var(--padding-sm) var(--padding-lg);
 }
@@ -356,7 +355,7 @@ body {
 }
 
 .page-title {
-    font-size: 18px; /* Reduced from 21px to match actual interface */
+    font-size: 18px;
     font-weight: var(--font-weight-semibold);
     color: var(--d365-gray-darkest);
 }
@@ -381,8 +380,11 @@ body {
     background-color: var(--d365-gray-lighter);
 }
 
-/* Quick Filter */
-.quick-filter {
+/* ============================================
+   Quick Filter (Actual D365FO Classes)
+   ============================================ */
+
+.quickFilter {
     display: flex;
     align-items: center;
     gap: var(--padding-sm);
@@ -390,7 +392,7 @@ body {
     background-color: var(--d365-white);
 }
 
-.quick-filter label {
+.quickFilter label {
     font-size: var(--font-size-base);
     color: var(--d365-gray-darker);
 }
@@ -409,7 +411,7 @@ body {
 .filter-input:focus {
     border-color: var(--d365-blue-primary);
     border-width: 2px;
-    padding: 5px 7px; /* Adjust padding to maintain size */
+    padding: 5px 7px;
 }
 
 .filter-field-select {
@@ -428,27 +430,30 @@ body {
     outline: none;
 }
 
-/* Data Grid */
+/* ============================================
+   Grid (Actual D365FO Classes - Simplified)
+   ============================================ */
+
 .grid-container {
     flex: 1;
     overflow: auto;
     padding: 0 var(--padding-lg);
 }
 
-.data-grid {
+.dyn-grid {
     width: 100%;
     border-collapse: collapse;
     font-size: var(--font-size-base);
 }
 
-.data-grid thead {
+.dyn-grid-header {
     position: sticky;
     top: 0;
-    background-color: #fafafa; /* Near white to match actual interface */
+    background-color: #fafafa;
     z-index: 10;
 }
 
-.data-grid th {
+.dyn-headerCell {
     text-align: left;
     padding: var(--padding-sm) var(--padding-md);
     font-weight: var(--font-weight-semibold);
@@ -459,12 +464,16 @@ body {
     transition: background-color 0.2s ease;
 }
 
-.data-grid th:hover {
+.dyn-headerCell:hover {
     background-color: var(--d365-gray-medium);
 }
 
-.data-grid th.sortable {
+.dyn-headerCell.sortable {
     position: relative;
+}
+
+.dyn-headerCellLabel {
+    display: inline-block;
 }
 
 .sort-icon {
@@ -490,39 +499,60 @@ body {
     width: 40px;
 }
 
-.data-grid td {
+.dyn-grid-body td {
     padding: var(--padding-sm) var(--padding-md);
     border-bottom: 1px solid var(--d365-gray-light);
 }
 
-.data-grid tbody tr {
+.dyn-grid-row {
     cursor: pointer;
     transition: background-color 0.15s ease;
 }
 
-.data-grid tbody tr:hover {
+.dyn-grid-row:hover {
     background-color: var(--d365-gray-lighter);
 }
 
-.data-grid tbody tr.selected {
-    background-color: #e8f4fd; /* Lighter blue tint to match actual interface */
+.dyn-grid-row.selected {
+    background-color: #e8f4fd;
 }
 
-.data-grid tbody tr.selected:hover {
-    background-color: #d0e9fb; /* Lighter hover state */
+.dyn-grid-row.selected:hover {
+    background-color: #d0e9fb;
 }
 
-.data-grid a {
+.dyn-grid a,
+.dyn-hyperlink {
     color: var(--d365-blue-primary);
     text-decoration: none;
     transition: text-decoration 0.1s ease;
 }
 
-.data-grid a:hover {
+.dyn-grid a:hover,
+.dyn-hyperlink:hover {
     text-decoration: underline;
 }
 
-/* Status Bar */
+/* Field classes */
+.dyn-field {
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    padding: 0;
+    width: 100%;
+}
+
+.dyn-field:focus {
+    outline: 2px solid var(--d365-blue-primary);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   Status Bar
+   ============================================ */
+
 .status-bar {
     background-color: var(--d365-gray-lighter);
     border-top: 1px solid var(--d365-gray-medium);
@@ -531,7 +561,10 @@ body {
     color: var(--d365-gray-darker);
 }
 
-/* Scrollbar Styling */
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
 ::-webkit-scrollbar {
     width: 12px;
     height: 12px;
@@ -556,17 +589,60 @@ body {
     scrollbar-color: var(--d365-gray) var(--d365-gray-lighter);
 }
 
-/* Responsive Design */
+/* ============================================
+   Layout System Classes (D365FO)
+   ============================================ */
+
+.layout-container {
+    display: flex;
+}
+
+.layout-horizontal {
+    flex-direction: row;
+}
+
+.layout-vertical {
+    flex-direction: column;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+/* ============================================
+   Group Classes (D365FO)
+   ============================================ */
+
+.group {
+    margin-bottom: var(--padding-md);
+}
+
+.group_header {
+    padding: var(--padding-sm) 0;
+}
+
+.group_title {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-base);
+    color: var(--d365-gray-darkest);
+}
+
+.group_content {
+    padding: var(--padding-sm) 0;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
 @media (max-width: 1200px) {
-    .action-pane-commands {
+    .actionPane {
         flex-wrap: wrap;
+        height: auto;
     }
 
-    .command-btn {
-        min-width: 50px;
-    }
-
-    .btn-label {
-        font-size: 10px;
+    .appBarTab-header {
+        font-size: 12px;
+        padding: 6px 10px;
     }
 }

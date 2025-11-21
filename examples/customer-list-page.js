@@ -57,6 +57,8 @@ function renderGrid() {
 
     filteredData.forEach((customer, index) => {
         const row = document.createElement('tr');
+        row.className = 'dyn-grid-row';
+        row.setAttribute('role', 'row');
         row.dataset.index = index;
         row.dataset.account = customer.account;
 
@@ -70,7 +72,7 @@ function renderGrid() {
                        ${selectedRows.has(customer.account) ? 'checked' : ''}
                        onchange="toggleRowSelection('${customer.account}')">
             </td>
-            <td><a href="#" onclick="openCustomerDetails('${customer.account}'); return false;">${customer.account}</a></td>
+            <td><a href="#" class="dyn-hyperlink" onclick="openCustomerDetails('${customer.account}'); return false;">${customer.account}</a></td>
             <td>${customer.name}</td>
             <td>${customer.invoiceAccount}</td>
             <td>${customer.customerGroup}</td>
@@ -215,34 +217,35 @@ function attachEventListeners() {
     const selectAllCheckbox = document.getElementById('selectAll');
     selectAllCheckbox.addEventListener('change', toggleSelectAll);
 
-    // Column sorting
-    const headers = document.querySelectorAll('.data-grid th.sortable');
+    // Column sorting (updated selector for D365FO classes)
+    const headers = document.querySelectorAll('.dyn-grid .dyn-headerCell.sortable');
     headers.forEach(header => {
         header.addEventListener('click', function() {
-            const columnName = this.textContent.trim().replace(' ▼', '');
+            const labelElement = this.querySelector('.dyn-headerCellLabel');
+            const columnName = labelElement ? labelElement.textContent.trim() : this.textContent.trim().replace(' ▼', '');
             sortColumn(columnName);
         });
     });
 
-    // Action Pane tab switching
-    const actionTabs = document.querySelectorAll('.action-tab');
-    actionTabs.forEach(tab => {
+    // Action Pane tab switching (updated selector for D365FO classes)
+    const appBarTabs = document.querySelectorAll('.appBarTab-header');
+    appBarTabs.forEach(tab => {
         tab.addEventListener('click', function() {
-            actionTabs.forEach(t => t.classList.remove('active'));
+            appBarTabs.forEach(t => t.classList.remove('active'));
             this.classList.add('active');
             // In a real implementation, this would change the command buttons shown
         });
     });
 
-    // Command buttons
-    const commandButtons = document.querySelectorAll('.command-btn');
-    commandButtons.forEach(btn => {
+    // Action buttons (Edit, New, Delete)
+    const actionButtons = document.querySelectorAll('.button.dynamicsButton');
+    actionButtons.forEach(btn => {
         btn.addEventListener('click', function() {
-            const label = this.querySelector('.btn-label')?.textContent || 'Command';
+            const label = this.querySelector('.button-label')?.textContent || 'Action';
             console.log(`Clicked: ${label}`);
 
             // Provide user feedback
-            if (selectedRows.size === 0 && !['Contacts', 'Change party association'].includes(label)) {
+            if (selectedRows.size === 0) {
                 alert('Please select at least one customer record first.');
             } else {
                 alert(`Executing: ${label}\n\nSelected records: ${selectedRows.size}`);
