@@ -259,12 +259,25 @@ body {
 .actionPane {
     background-color: var(--d365-white);
     border-bottom: 1px solid var(--d365-gray-medium);
+}
+
+/* Tabs Row - all tabs in single horizontal row */
+.actionPane-tabsRow {
     display: flex;
     align-items: center;
-    padding: var(--padding-sm) var(--padding-lg);
-    gap: var(--padding-md);
+    padding: 0 var(--padding-lg);
     overflow-x: auto;
-    height: 48px;
+    border-bottom: 1px solid var(--d365-gray-medium);
+    background-color: var(--d365-white);
+}
+
+/* Command Buttons Row - separate row below tabs */
+.actionPane-commandsRow {
+    display: flex;
+    gap: 4px;
+    padding: 8px 16px;
+    background: #faf9f8;
+    overflow-x: auto;
 }
 
 /* Action Buttons Group (Edit, New, Delete) */
@@ -316,15 +329,16 @@ body {
 .appBarTab-header {
     background: none;
     border: none;
-    padding: var(--padding-sm) var(--padding-md);
+    padding: 8px 12px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 12px;
     white-space: nowrap;
     position: relative;
     transition: all 0.2s ease;
-    height: 32px;
+    height: 40px;
     display: flex;
     align-items: center;
+    border-bottom: 2px solid transparent;
 }
 
 .appBarTab-header:hover {
@@ -334,6 +348,11 @@ body {
 .appBarTab-header.active {
     font-weight: var(--font-weight-semibold);
     background-color: var(--d365-gray-lighter);
+    border-bottom-color: var(--d365-blue-primary);
+}
+
+.appBarTab-header.system-tab {
+    border-right: 1px solid var(--d365-gray-medium);
 }
 
 .appBarTab-headerLabel {
@@ -345,26 +364,28 @@ body {
    ============================================ */
 
 .page-header {
-    padding: var(--padding-lg) var(--padding-lg) var(--padding-sm) var(--padding-lg);
-}
-
-.page-title-section {
+    padding: 12px 16px 8px 16px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: space-between;
 }
 
 .page-title {
-    font-size: 18px;
+    font-size: 21px;
     font-weight: var(--font-weight-semibold);
     color: var(--d365-gray-darkest);
+    margin: 0;
 }
 
 .view-selector {
     display: flex;
     align-items: center;
-    gap: var(--padding-sm);
-    font-size: var(--font-size-base);
+    gap: 6px;
+    font-size: 12px;
+}
+
+.view-selector label {
+    color: var(--d365-gray-darker);
 }
 
 .dropdown-btn {

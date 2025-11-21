@@ -1,21 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--
-    D365FO Customer List Page - Updated with Actual Class Names
-    Pattern: List Page
-
-    Updates Applied (2025-11-21):
-    - Using ACTUAL D365FO class names from HTML1.html analysis
-    - .top-nav → .navigationBar
-    - .action-pane → .actionPane
-    - .action-tab → .appBarTab with .appBarTab-header
-    - .quick-filter → .quickFilter
-    - .data-grid → .dyn-grid with proper D365FO grid classes
-    - Button structure updated with .button-container, .button-commandRing, .button-label
-    - Added data-dyn-* attributes for authenticity
-
-    Based on actual D365FO HTML structure analysis (HTML1.html)
--->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +7,7 @@
     <link rel="stylesheet" href="d365fo-styles.css">
 </head>
 <body>
-    <!-- Navigation Bar (Actual D365FO Classes) -->
+    <!-- Navigation Bar -->
     <div class="navigationBar" data-dyn-role="NavigationBar">
         <div class="navigationBar-launch">
             <button class="navigationBar-symbolButton" title="Open navigation">☰</button>
@@ -65,264 +49,119 @@
 
         <!-- Main Content Area -->
         <div class="content-area">
-            <!-- Action Pane (Actual D365FO Structure) -->
+            <!-- Action Pane -->
             <div class="actionPane" data-dyn-role="ActionPane">
-                <!-- Action Buttons Group -->
-                <div class="actionPane-buttons">
-                    <button class="button dynamicsButton" data-dyn-role="Button" data-dyn-controlname="SystemDefinedViewEditButton">
-                        <div class="button-container">
-                            <span class="button-commandRing">✏️</span>
-                            <span class="button-label">Edit</span>
-                        </div>
-                    </button>
-                    <button class="button dynamicsButton" data-dyn-role="Button" data-dyn-controlname="NewCustomer">
-                        <div class="button-container">
-                            <span class="button-commandRing">➕</span>
-                            <span class="button-label">New</span>
-                        </div>
-                    </button>
-                    <button class="button dynamicsButton" data-dyn-role="Button" data-dyn-controlname="DeleteButton">
-                        <div class="button-container">
-                            <span class="button-commandRing">🗑</span>
-                            <span class="button-label">Delete</span>
-                        </div>
-                    </button>
+                <!-- Tabs Row -->
+                <div class="actionPane-tabsRow">
+                    <button class="appBarTab-header system-tab">Edit</button>
+                    <button class="appBarTab-header system-tab">New</button>
+                    <button class="appBarTab-header system-tab">Delete</button>
+                    <button class="appBarTab-header active" data-tab="customer">Customer</button>
+                    <button class="appBarTab-header" data-tab="sell">Sell</button>
+                    <button class="appBarTab-header" data-tab="invoice">Invoice</button>
+                    <button class="appBarTab-header" data-tab="collect">Collect</button>
+                    <button class="appBarTab-header" data-tab="projects">Projects</button>
+                    <button class="appBarTab-header" data-tab="service">Service</button>
+                    <button class="appBarTab-header" data-tab="market">Market</button>
+                    <button class="appBarTab-header" data-tab="commerce">Commerce</button>
+                    <button class="appBarTab-header" data-tab="price">Price</button>
+                    <button class="appBarTab-header" data-tab="general">General</button>
+                    <button class="appBarTab-header" data-tab="credit">Credit management</button>
+                    <button class="appBarTab-header" data-tab="billing">Recurring contract billing</button>
+                    <button class="appBarTab-header" data-tab="options">Options</button>
+                </div>
 
-                    <!-- More Actions Dropdown -->
+                <!-- Command Buttons Row (shown for Customer tab) -->
+                <div class="actionPane-commandsRow" id="customerCommands">
+                    <!-- Contacts dropdown -->
                     <div class="flyoutContainer">
-                        <button class="button flyoutButton-Button dynamicsButton"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                type="button"
-                                id="moreActionsButton">
-                            <div class="button-container">
-                                <span class="button-commandRing">⚙</span>
-                                <span class="button-label button-label-dropDown">More</span>
+                        <button class="button commandButton flyoutButton-Button" aria-haspopup="true" aria-expanded="false">
+                            <div class="commandButton-container">
+                                <span class="commandButton-icon">👤</span>
+                                <span class="commandButton-label">Contacts</span>
+                                <span class="commandButton-dropdown">▼</span>
                             </div>
                         </button>
-
-                        <div class="sysPopup flyoutButton-flyOut layout-root-scope"
-                             role="menu"
-                             tabindex="-1"
-                             aria-hidden="true"
-                             id="moreActionsMenu"
-                             style="display: none;">
-
-                            <button class="button flyout-menuItem" role="menuitem" type="button">
-                                <div class="button-container">
-                                    <span class="button-commandRing">📋</span>
-                                    <span class="button-label">Copy</span>
-                                </div>
+                        <div class="sysPopup flyoutButton-flyOut" role="menu" aria-hidden="true" style="display: none;">
+                            <button class="button flyout-menuItem" role="menuitem">
+                                <div class="button-container"><span class="button-label">Contact person</span></div>
                             </button>
-
-                            <button class="button flyout-menuItem" role="menuitem" type="button">
-                                <div class="button-container">
-                                    <span class="button-commandRing">📤</span>
-                                    <span class="button-label">Export to Excel</span>
-                                </div>
+                            <button class="button flyout-menuItem" role="menuitem">
+                                <div class="button-container"><span class="button-label">Contact information</span></div>
                             </button>
-
-                            <button class="button flyout-menuItem" role="menuitem" type="button">
-                                <div class="button-container">
-                                    <span class="button-commandRing">🔄</span>
-                                    <span class="button-label">Refresh</span>
-                                </div>
-                            </button>
-
-                            <button class="button flyout-menuItem" role="menuitem" type="button">
-                                <div class="button-container">
-                                    <span class="button-commandRing">📊</span>
-                                    <span class="button-label">View details</span>
-                                </div>
-                            </button>
-
                         </div>
                     </div>
-                </div>
 
-                <!-- App Bar Tabs -->
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabCustomer">
-                    <button class="appBarTab-header active">
-                        <span class="appBarTab-headerLabel">Customer</span>
-                    </button>
-                    <!-- Command buttons for Customer tab -->
-                    <div class="appBarTab-commands" style="display: flex; gap: 4px; padding: 8px; background: #faf9f8;">
-                        <!-- Contacts dropdown -->
-                        <div class="flyoutContainer">
-                            <button class="button commandButton flyoutButton-Button"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    type="button">
-                                <div class="commandButton-container">
-                                    <span class="commandButton-icon">👤</span>
-                                    <span class="commandButton-label">Contacts</span>
-                                    <span class="commandButton-dropdown">▼</span>
-                                </div>
-                            </button>
-                            <div class="sysPopup flyoutButton-flyOut layout-root-scope"
-                                 role="menu"
-                                 tabindex="-1"
-                                 aria-hidden="true"
-                                 style="display: none;">
-                                <button class="button flyout-menuItem" role="menuitem">
-                                    <div class="button-container">
-                                        <span class="button-label">Contact person</span>
-                                    </div>
-                                </button>
-                                <button class="button flyout-menuItem" role="menuitem">
-                                    <div class="button-container">
-                                        <span class="button-label">Contact information</span>
-                                    </div>
-                                </button>
-                            </div>
+                    <!-- Change party association -->
+                    <button class="button commandButton">
+                        <div class="commandButton-container">
+                            <span class="commandButton-icon">🔄</span>
+                            <span class="commandButton-label">Change party<br>association</span>
                         </div>
+                    </button>
 
-                        <!-- Change party association -->
-                        <button class="button commandButton">
+                    <!-- Transactions -->
+                    <button class="button commandButton">
+                        <div class="commandButton-container">
+                            <span class="commandButton-icon">📄</span>
+                            <span class="commandButton-label">Transactions</span>
+                        </div>
+                    </button>
+
+                    <!-- Balance -->
+                    <button class="button commandButton">
+                        <div class="commandButton-container">
+                            <span class="commandButton-icon">💰</span>
+                            <span class="commandButton-label">Balance</span>
+                        </div>
+                    </button>
+
+                    <!-- Forecast -->
+                    <button class="button commandButton">
+                        <div class="commandButton-container">
+                            <span class="commandButton-icon">📊</span>
+                            <span class="commandButton-label">Forecast</span>
+                        </div>
+                    </button>
+
+                    <!-- Bank dropdown -->
+                    <div class="flyoutContainer">
+                        <button class="button commandButton flyoutButton-Button" aria-haspopup="true" aria-expanded="false">
                             <div class="commandButton-container">
-                                <span class="commandButton-icon">🔄</span>
-                                <span class="commandButton-label">Change party<br>association</span>
+                                <span class="commandButton-icon">🏦</span>
+                                <span class="commandButton-label">Bank</span>
+                                <span class="commandButton-dropdown">▼</span>
                             </div>
                         </button>
-
-                        <!-- Transactions -->
-                        <button class="button commandButton">
-                            <div class="commandButton-container">
-                                <span class="commandButton-icon">📄</span>
-                                <span class="commandButton-label">Transactions</span>
-                            </div>
-                        </button>
-
-                        <!-- Balance -->
-                        <button class="button commandButton">
-                            <div class="commandButton-container">
-                                <span class="commandButton-icon">💰</span>
-                                <span class="commandButton-label">Balance</span>
-                            </div>
-                        </button>
-
-                        <!-- Forecast -->
-                        <button class="button commandButton">
-                            <div class="commandButton-container">
-                                <span class="commandButton-icon">📊</span>
-                                <span class="commandButton-label">Forecast</span>
-                            </div>
-                        </button>
-
-                        <!-- Bank dropdown -->
-                        <div class="flyoutContainer">
-                            <button class="button commandButton flyoutButton-Button"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    type="button">
-                                <div class="commandButton-container">
-                                    <span class="commandButton-icon">🏦</span>
-                                    <span class="commandButton-label">Bank</span>
-                                    <span class="commandButton-dropdown">▼</span>
-                                </div>
+                        <div class="sysPopup flyoutButton-flyOut" role="menu" aria-hidden="true" style="display: none;">
+                            <button class="button flyout-menuItem" role="menuitem">
+                                <div class="button-container"><span class="button-label">Bank accounts</span></div>
                             </button>
-                            <div class="sysPopup flyoutButton-flyOut layout-root-scope"
-                                 role="menu"
-                                 tabindex="-1"
-                                 aria-hidden="true"
-                                 style="display: none;">
-                                <button class="button flyout-menuItem" role="menuitem">
-                                    <div class="button-container">
-                                        <span class="button-label">Bank accounts</span>
-                                    </div>
-                                </button>
-                                <button class="button flyout-menuItem" role="menuitem">
-                                    <div class="button-container">
-                                        <span class="button-label">Summary update</span>
-                                    </div>
-                                </button>
-                                <button class="button flyout-menuItem" role="menuitem">
-                                    <div class="button-container">
-                                        <span class="button-label">Credit cards</span>
-                                    </div>
-                                </button>
-                            </div>
+                            <button class="button flyout-menuItem" role="menuitem">
+                                <div class="button-container"><span class="button-label">Summary update</span></div>
+                            </button>
+                            <button class="button flyout-menuItem" role="menuitem">
+                                <div class="button-container"><span class="button-label">Credit cards</span></div>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabSell">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Sell</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabInvoice">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Invoice</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabCollect">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Collect</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabProjects">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Projects</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabService">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Service</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabMarket">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Market</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabRetail">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Commerce</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabPricing">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Price</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabGeneral">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">General</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabCredit">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Credit management</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="SubBillTab">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Recurring contract billing</span>
-                    </button>
-                </div>
-                <div class="appBarTab" data-dyn-role="AppBarTab" data-dyn-controlname="aptabOptions">
-                    <button class="appBarTab-header">
-                        <span class="appBarTab-headerLabel">Options</span>
-                    </button>
                 </div>
             </div>
 
-            <!-- Page Title and View Selector -->
+            <!-- Page Title -->
             <div class="page-header">
-                <div class="page-title-section">
-                    <h1 class="page-title">All customers</h1>
-                    <div class="view-selector">
-                        <label>My view</label>
-                        <button class="dropdown-btn">▼</button>
-                    </div>
+                <h1 class="page-title">All customers</h1>
+                <div class="view-selector">
+                    <label>My view</label>
+                    <button class="dropdown-btn">▼</button>
                 </div>
             </div>
 
-            <!-- Quick Filter (Actual D365FO Classes) -->
-            <div class="quickFilter" data-dyn-role="QuickFilter" data-dyn-controlname="QuickFilterControl">
+            <!-- Quick Filter -->
+            <div class="quickFilter">
                 <label>Search by</label>
-                <input type="text" class="filter-input" id="quickFilter" placeholder="Filter..." aria-label="Quick filter">
-                <select class="filter-field-select" aria-label="Filter field">
+                <input type="text" class="filter-input" id="quickFilter" placeholder="">
+                <select class="filter-field-select">
                     <option>Telephone</option>
                     <option>Account</option>
                     <option>Name</option>
@@ -330,50 +169,50 @@
                 </select>
             </div>
 
-            <!-- Data Grid (Actual D365FO Classes - Simplified Structure) -->
+            <!-- Data Grid -->
             <div class="grid-container">
                 <table class="dyn-grid" id="customerGrid" role="grid">
                     <thead class="dyn-grid-header">
                         <tr role="row">
                             <th class="checkbox-col dyn-headerCell">
-                                <input type="checkbox" id="selectAll" aria-label="Select all">
+                                <input type="checkbox" id="selectAll">
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_AccountNum">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Account</div>
                                 <span class="sort-icon"></span>
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_Name">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Name</div>
                                 <span class="sort-icon"></span>
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_InvoiceAccount">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Invoice account</div>
                                 <span class="sort-icon"></span>
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_CustGroup">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Customer group</div>
                                 <span class="sort-icon"></span>
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_Currency">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Currency</div>
                                 <span class="sort-icon"></span>
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_Phone">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Telephone</div>
                                 <span class="sort-icon"></span>
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="CustTable_PhoneLocal">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Extension</div>
                                 <span class="sort-icon"></span>
                             </th>
-                            <th class="dyn-headerCell sortable" data-dyn-columnname="MCRMerged">
+                            <th class="dyn-headerCell sortable">
                                 <div class="dyn-headerCellLabel">Is merged</div>
                                 <span class="sort-icon"></span>
                             </th>
                         </tr>
                     </thead>
                     <tbody class="dyn-grid-body" id="gridBody">
-                        <!-- Data will be populated by JavaScript -->
+                        <!-- Data populated by JavaScript -->
                     </tbody>
                 </table>
             </div>
