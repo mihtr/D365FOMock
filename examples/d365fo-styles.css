@@ -686,6 +686,11 @@ body {
 .appBarTab-commands {
     background: #faf9f8;
     border-top: 1px solid var(--d365-gray-medium);
+    display: none;
+}
+
+.appBarTab-header.active ~ .appBarTab-commands {
+    display: flex;
 }
 
 /* ============================================

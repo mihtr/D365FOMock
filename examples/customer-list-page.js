@@ -45,6 +45,9 @@ let sortDirection = 'asc';
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', function() {
+    // Select first row (DE-001) by default to match screenshot
+    selectedRows.add('DE-001');
+
     renderGrid();
     attachEventListeners();
     updateRecordCount();
